@@ -1,0 +1,26 @@
+{
+    "name": "ganti/phpTemplateBlocks",
+    "description": "Simple Templateengine, e.g. to compile eMails",
+    "homepage": "https://github.com/ganti/phpTemplateBlocks",
+    "minimum-stability": "dev",
+    "version": "dev-master",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Simon Gantenbein",
+            "email": "ganti@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ganti\\": "src"
+        }
+    },
+    "scripts": {
+        "test": "phpunit tests"
+    }
+}
