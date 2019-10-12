@@ -15,14 +15,14 @@ Simple Template Class, e.g. for eMail Template
                     'block3' => True
     );
 
-    $mt = new mailTemplate($file = $file, $vars = $vars, $blocks = $blocks);
-    $output =  $mt->getOutput();
+    $t = new phpTemplateBlocks($file = $file, $vars = $vars, $blocks = $blocks);
+    $output =  $t->getOutput();
     echo $output;
 ```
 
 ### add vars and blocks after creating an instance
 ```php
-$mt = new mailTemplate($file = $file);
+$mt = new phpTemplateBlocks($file = $file);
 $mt->vars['var1'] = 'var1xxx';
 $mt->blocks['block1'] = True;
 ```
@@ -30,8 +30,8 @@ $mt->blocks['block1'] = True;
 ### Variable replacement
 Template: `This is a {{animal}}.`
 ```php
-$mt = new mailTemplate($file = $file);
-$mt->vars['animal'] = 'dog';
+$t = new phpTemplateBlocks($file = $file);
+$t->vars['animal'] = 'dog';
 ```
 
 Output: 
@@ -47,8 +47,8 @@ Template:
 {{endblock:block1}}
 ```
 ```php
-$mt = new mailTemplate($file = $file);
-$mt->blocks['block1'] = True;
+$t = new phpTemplateBlocks($file = $file);
+$t->blocks['block1'] = True;
 ```
 
 Output:

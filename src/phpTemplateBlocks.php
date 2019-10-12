@@ -3,7 +3,7 @@
     namespace Ganti;
     use Exception;
 
-    class mailTemplate {
+    class phpTemplateBlocks{
         public $template;
         public $vars;
         public $blocks;

@@ -12,17 +12,18 @@
                     'block3' => True
     );
 
-    $mt = new mailTemplate($file = $file, $vars = $vars, $blocks = $blocks);
-    echo $mt->getOutput();
+    $t = new phpTemplateBlocks($file = $file, $vars = $vars, $blocks = $blocks);
+    $output =  $t->getOutput();
+    echo $output;
 
 
 /*
-    $mt = new mailTemplate($file = $file);
-    $mt->vars['var1'] = 'var1xxx';
-    $mt->vars['var2'] = 'var2xxx';
-    $mt->vars['var3'] = 'var3xxx';
-    $mt->blocks['block1'] = False;
-    $mt->blocks['block2'] = True;
-    $mt->blocks['block3'] = False;
-    echo $mt->getOutput();
+    $t = new mailTemplate($file = $file);
+    $t->vars['var1'] = 'var1xxx';
+    $t->vars['var2'] = 'var2xxx';
+    $t->vars['var3'] = 'var3xxx';
+    $t->blocks['block1'] = False;
+    $t->blocks['block2'] = True;
+    $t->blocks['block3'] = False;
+    echo $t->getOutput();
 */
