@@ -28,10 +28,51 @@ $mt->blocks['block1'] = True;
 ```
 
 ### Variable replacement
-Source: `This is a {{animal}}.`
+Template: `This is a {{animal}}.`
 ```php
 $mt = new mailTemplate($file = $file);
 $mt->vars['animal'] = 'dog';
 ```
 
-Output: `This is a dog.`
+Output: 
+```html
+This is a dog.
+```
+
+## Show / Hide Blocks
+Template:
+```html
+{{block:block1}}
+    <p>This is block1</p>
+{{endblock:block1}}
+```
+```php
+$mt = new mailTemplate($file = $file);
+$mt->blocks['block1'] = True;
+```
+
+Output:
+```html
+    <p>This is block1</p>
+```
+
+## Combined Blocks
+Combined blocks allow to show a block if one of the keys are `true`
+
+Template:
+```html
+{{block:block2,block3}}
+    <p>This is Block2or3</p>
+{{endblock:block2,block3}}
+```
+
+
+```php
+$mt = new mailTemplate($file = $file);
+$mt->blocks['block2'] = False;
+$mt->blocks['block3'] = True;
+```
+```html
+    <p>This is Block2or3</p>
+```
+
