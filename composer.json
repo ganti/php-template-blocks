@@ -1,7 +1,7 @@
 {
-    "name": "ganti/phpTemplateBlocks",
+    "name": "ganti/php-template-blocks",
     "description": "Simple Templateengine, e.g. to compile eMails",
-    "homepage": "https://github.com/ganti/phpTemplateBlocks",
+    "homepage": "https://github.com/ganti/php-template-blocks",
     "minimum-stability": "dev",
     "version": "dev-master",
     "prefer-stable": true,
