@@ -65,13 +65,13 @@ Template:
     <p>This is Block2or3</p>
 {{endblock:block2,block3}}
 ```
-
-
 ```php
 $mt = new mailTemplate($file = $file);
 $mt->blocks['block2'] = False;
 $mt->blocks['block3'] = True;
 ```
+
+Output:
 ```html
     <p>This is Block2or3</p>
 ```
