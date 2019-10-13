@@ -1,5 +1,8 @@
 <?php
-    namespace Ganti;
+
+namespace Ganti;
+
+
     require_once(__DIR__.'/../vendor/autoload.php'); 
     require_once(__DIR__.'/../src/phpTemplateBlocks.php');
 
@@ -14,7 +17,7 @@
     );
 
     $t = new phpTemplateBlocks($file = $file, $vars = $vars, $blocks = $blocks);
-    $output =  $t->getOutputText();
+    $output =  $t->getOutput('html');
     echo $output;
 
 

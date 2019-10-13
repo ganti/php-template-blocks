@@ -3,7 +3,7 @@ Simple Template Class, e.g. for eMail Template
 
 
 ## Usage
-### add vars and blocks when creating the instance
+### Example
 ```php
     $file = __DIR__.'/example.html';
     $vars = array(  'name' => 'Hal',
@@ -18,6 +18,16 @@ Simple Template Class, e.g. for eMail Template
     $t = new phpTemplateBlocks($file = $file, $vars = $vars, $blocks = $blocks);
     $output =  $t->getOutput();
     echo $output;
+```
+
+### Output as HTML or text
+```php
+$t->getOutput();        //Output as HTML
+$t->getOutput('html');  //Output as HTML
+$t->getOutputHTML();    //Output as HTML
+
+$t->getOutput('text');  //Output as text
+$t->getOutputText();    //Output as text
 ```
 
 ### add vars and blocks after creating an instance
