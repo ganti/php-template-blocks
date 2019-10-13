@@ -12,12 +12,12 @@ namespace Ganti;
                     'var3' => 'Foobar'
     );
     $blocks = array('block1' => True,
-                    'block2' => False,
+                    'block2' => True,
                     'block3' => True
     );
 
     $t = new phpTemplateBlocks($file = $file, $vars = $vars, $blocks = $blocks);
-    $output =  $t->getOutput('html');
+    $output =  $t->getOutput('text');
     echo $output;
 
 

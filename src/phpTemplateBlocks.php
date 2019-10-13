@@ -115,16 +115,28 @@
         protected function setBlocksForOutput(){
             foreach($this->templateElements as $block){
                 if($this->startsWith('block:', $block)){
-                    $showBlock = False;
+                    $showBlock = True;
                     $block = trim(str_replace('block:','', $block));
-                    $blockNoType = preg_replace(array('/(_html|_text)$/'), '', $block);
-
                     $aked_keysWithType = preg_split('/[ ]?,/', $block);
-                    $aked_keysNoType = preg_split('/[ ]?,/', $blockNoType);
                     
-                    foreach($aked_keysNoType as $key){
-                        if(isset($this->blocks[$key]) and $this->blocks[$key] === True){
-                            $showBlock = True;
+                    if(in_array('and', $aked_keysWithType) === True){
+                        $operator = 'and';
+                        array_diff($aked_keysWithType, array('and'));
+                    }else{
+                        $operator = 'or';
+                        array_diff($aked_keysWithType, array('or'));
+                    }
+
+                    foreach($aked_keysWithType as $key){
+                        $keykNoType = preg_replace(array('/(_html|_text)$/'), '', $key);
+                        if(isset($this->blocks[$keykNoType]) and $this->blocks[$keykNoType] === True){
+                            if($operator === 'and'){
+                                $showBlock = $showBlock AND True;
+                            }else{
+                                $showBlock = True;
+                            }
+                        }else{
+                            $showBlock = $showBlock AND False;
                         }
                     }
 
@@ -138,16 +150,20 @@
                         } 
                     }
 
-                    if($showBlock === True){
-                        //Remove block and endblock
-                        $patterns = array(sprintf("/[\r\n]{{block:%s}}/", $block), sprintf("/[\r\n]{{endblock:%s}}/", $block) );
-                        $this->output = preg_replace($patterns, '', $this->output);
-                    }else{
-                        //Remove whole block
-                        $pattern = sprintf("/[\r\n]{{block:%s}}(.*?(\n))+.*?{{endblock:%s}}/", $block, $block);
-                        $this->output = preg_replace($pattern, '', $this->output);
-                    }
+                    $this->modifyBlocksForOutput($block, $showBlock);
                 }
+            }
+        }
+
+        protected function modifyBlocksForOutput($block, $showBlock = False){
+            if($showBlock === True){
+                //Remove block and endblock
+                $patterns = array(sprintf("/{{block:%s}}[\r\n]/", $block), sprintf("/[\r\n]{{endblock:%s}}[\r\n]/", $block) );
+                $this->output = preg_replace($patterns, '', $this->output);
+            }else{
+                //Remove whole block
+                $pattern = sprintf("/[\r\n]{{block:%s}}(.*?(\n))+.*?{{endblock:%s}}/", $block, $block);
+                $this->output = preg_replace($pattern, '', $this->output);
             }
         }
         
