@@ -13,8 +13,8 @@
             $this->templateElements = array();
             $this->templateVars = array();
             $this->templateBlocks = array();
-            $this->vars = null;
-            $this->blocks = null;
+            $this->vars = array();
+            $this->blocks = array();
             $this->output = null;
             $this->outputType = null;
             
@@ -155,8 +155,10 @@
                             }else{
                                 $showBlock = True;
                             }
+                        }else if(isset($this->blocks[$keykNoType]) and $this->blocks[$keykNoType] === False){
+                            $showBlock = False;
                         }else{
-                            $showBlock = $showBlock AND False;
+                            $showBlock = False;
                         }
                     }
 
