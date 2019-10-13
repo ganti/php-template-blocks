@@ -9,6 +9,7 @@
         public $blocks;
 
         function __construct($file = null, $vars = null, $blocks = null){
+            @set_exception_handler(array($this, 'template_error'));
             $this->templateElements = array();
             $this->templateVars = array();
             $this->templateBlocks = array();
@@ -50,6 +51,9 @@
             $this->substiututeTemplateVars();
             $this->BlocksSanityCheck();
             $this->setBlocksForOutput();
+            $this->output = preg_replace("/(\r\r)/", PHP_EOL, $this->output);
+            $this->output = preg_replace("/(\n\n)/", PHP_EOL, $this->output);
+            $this->output = preg_replace("/(\r\n\r\n)/", PHP_EOL, $this->output);
             return $this->output;
         }
 
@@ -99,13 +103,28 @@
         protected function BlocksSanityCheck(){
             foreach($this->templateElements as $block){
                 if($this->startsWith('block:', $block)){
-                    $endPattern = 'endblock:'.str_replace('block:','', $block);
+                    //Missing Endblock
+                    $endPattern = 'endblock:'.preg_replace('/^block:/', '', $block);
                     if(in_array($endPattern, $this->templateElements) === False){
-                        try{
-                            throw new Exception(sprintf("Block «%s» has no endblock defined!", $block));
+                        throw new Exception(sprintf("Block «%s» has no endblock defined!", $block));
+                        unset($this->blocks[$pattern]);
+                        return False;
+                    }
+                    //Mixed Outputs
+                    $keys = preg_split('/[ ]?,/', preg_replace('/^block:/', '', $block));
+                    $firstType = null;
+                    foreach($keys as $key){
+                        if($firstType === null and ($this->endsWith('_html', $key) or $this->endsWith('_text', $key))){
+                            $keyParts = explode('_', $key);
+                            $firstType = end($keyParts);
                         }
-                        finally{
-                            unset($this->blocks[$pattern]);
+                        if($firstType !== null){
+                            $keyParts = explode('_', $key);
+                            if (end($keyParts) !== $firstType and end($keyParts) !== $key){
+                                $blockNoType = preg_replace('/(_html|_text)$/', '', $key);
+                                throw new Exception(sprintf("Block «%s» mixed outputs, eighter block_text or block_text, but not both!", $block, $blockNoType));
+                                return False;
+                            }
                         }
                     }
                 }
@@ -115,16 +134,17 @@
         protected function setBlocksForOutput(){
             foreach($this->templateElements as $block){
                 if($this->startsWith('block:', $block)){
-                    $showBlock = True;
                     $block = trim(str_replace('block:','', $block));
                     $aked_keysWithType = preg_split('/[ ]?,/', $block);
                     
                     if(in_array('and', $aked_keysWithType) === True){
                         $operator = 'and';
-                        array_diff($aked_keysWithType, array('and'));
+                        array_diff($aked_keysWithType, array('and','AND'));
+                        $showBlock = True;
                     }else{
                         $operator = 'or';
-                        array_diff($aked_keysWithType, array('or'));
+                        array_diff($aked_keysWithType, array('or', 'OR'));
+                        $showBlock = False;
                     }
 
                     foreach($aked_keysWithType as $key){
@@ -174,5 +194,9 @@
 
         protected function endsWith($needle, $haystack){
             return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+        }
+
+        public function template_error($exception) {
+            print "\nTemplateError: ". $exception->getMessage() ."\n\n";
         }
     }

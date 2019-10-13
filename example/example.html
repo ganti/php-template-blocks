@@ -1,7 +1,10 @@
-<p>
-    Hallo {{name}}<br>
+<p>--- Vars ---</p>
+<p> Hallo {{name}}<br>
     this is a text which says {{var2 }} and <strong>{{ var3 }}</strong>
 </p>
+
+
+<p>--- Block, Block-HTML, Block-Text ---</p>
 {{block:block1}}
 <p>This is block1</p>
 {{endblock:block1}}
@@ -14,20 +17,32 @@
 <p>This is block1_text</p>
 {{endblock:block1_text}}
 
-<p>--- between text ---</p>
 
+<p>--- Block OR (one key must be true) ---</p>
 {{block:block2,block3}}
 <p>This is Block2or3</p>
 {{endblock:block2,block3}}
 
-<p>--- between text2 ---</p>
+{{block:or,block2_html,block3}}
+<p>This is Block2or3_html</p>
+{{endblock:or,block2_html,block3}}
 
 {{block:or,block2_text,block3}}
 <p>This is Block2or3_text</p>
 {{endblock:or,block2_text,block3}}
 
-{{block:and,block2_html,block3}}
-<p>This is Block2and3_text</p>
-{{endblock:and,block2_html,block3}}
 
-EOF
+<p>--- Block AND (all keys must be true) ---</p>
+{{block:and,block1,block2,block3}}
+<p>This is Block1,2and3</p>
+{{endblock:and,block1,block2,block3}}
+
+{{block:and,block2_html,block3_html}}
+<p>This is Block2and3_html</p>
+{{endblock:and,block2_html,block3_html}}
+
+{{block:and,block2_text,block3_text}}
+<p>This is Block2and3_text</p>
+{{endblock:and,block2_text,block3_text}}
+
+<p>--- EOF ---</p>

@@ -17,7 +17,7 @@ namespace Ganti;
     );
 
     $t = new phpTemplateBlocks($file = $file, $vars = $vars, $blocks = $blocks);
-    $output =  $t->getOutput('text');
+    $output =  $t->getOutput('html');
     echo $output;
 
 
