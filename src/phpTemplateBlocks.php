@@ -1,5 +1,4 @@
 <?php
-
     namespace Ganti;
     use Exception;
 
@@ -50,6 +49,12 @@
             $this->BlocksSanityCheck();
             $this->setBlocksForOutput();
             return $this->output;
+        }
+
+        public function getOutputText(){
+            $outputHTML = $this->getOutput();
+            $html = new \Html2Text\Html2Text($outputHTML);
+            return $html->getText();
         }
 
         public function findAllSubstitutionKeys(){
