@@ -24,14 +24,13 @@ Simple Template Class, e.g. for eMail Template
 <p>This is block1_text, shown only in text</p>
 {{endblock:block1_text}}
 
-{{block:and,block2_text,block3}}
-<p>This is Block2or3_text, shown only in text if block2 and block3 are true</p>
-{{endblock:or,block2_text,block3}}
-
 {{block:and,block1,block2,block3}}
 <p>This is Block1,2and3, shown only if block1, block2 and block3 are true</p>
 {{endblock:and,block1,block2,block3}}
 
+{{block:and,block2_text,block3}}
+<p>This is Block2or3_text, shown only in text if block2 and block3 are true</p>
+{{endblock:or,block2_text,block3}}
 ```
 
 ```php
