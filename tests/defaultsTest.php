@@ -70,10 +70,10 @@ final class phpTemplateBlocksTest extends TestCase {
                             "<p>This is block1_text</p>",
                             "<p>This is Block2or3_text</p>"
                         );
-        $found = array( "<p>This is block1</p>",
-                        "<p>This is block1_html</p>",
-                        "<p>This is Block1,2and3</p>",
-                        "<p>This is Block1,2and3</p>"
+        $found = array( "<p>This is block1",
+                        "<p>This is block1_html",
+                        "<p>This is Block2or3_html</p>\n",
+                        "<p>This is Block2and3_html</p>\n"
         );
         foreach($notFound as $v){
             $this->assertStringNotContainsString($v, $t->getOutput('html'));
@@ -109,46 +109,45 @@ final class phpTemplateBlocksTest extends TestCase {
         $file = __DIR__.'/test.html';
         $t = new phpTemplateBlocks($file = $file);
 
-        $t->blocks = array('block2' => True, 'block3' => True);
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block2' => True, 'block3' => True));
         $this->assertStringContainsString("<p>This is Block2or3</p>", $t->getOutput('html'));
-        $this->assertStringContainsString("<p>This is Block2or3_html</p>", $t->getOutput('html'));
+        $this->assertStringContainsString("<p>This is Block2or3_html", $t->getOutput('html'));
         
-        $t->blocks = array('block2' => False, 'block3' => True);
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block2' => False, 'block3' => True));
         $this->assertStringContainsString("<p>This is Block2or3</p>", $t->getOutput('html'));
-        $this->assertStringContainsString("<p>This is Block2or3_html</p>", $t->getOutput('html'));
+        $this->assertStringContainsString("<p>This is Block2or3_html", $t->getOutput('html'));
         
-        $t->blocks = array('block2' => True, 'block3' => False);
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block2' => True, 'block3' => False));
         $this->assertStringContainsString("<p>This is Block2or3</p>", $t->getOutput('html'));
-        $this->assertStringContainsString("<p>This is Block2or3_html</p>", $t->getOutput('html'));
+        $this->assertStringContainsString("<p>This is Block2or3_html", $t->getOutput('html'));
 
-        $t->blocks = array('block2' => False, 'block3' => False);
-        $this->assertStringNotContainsString("This is Block2or3", $t->getOutput('text'));
-        $this->assertStringNotContainsString("This is Block2or3_text", $t->getOutput('text'));
+        $t = new phpTemplateBlocks($file = $file, $blocks = array('block2' => False, 'block3' => False));
+        $this->assertStringNotContainsString("<p>This is Block2or3", $t->getOutput('text'));
+        $this->assertStringNotContainsString("<p>This is Block2or3_text", $t->getOutput('text'));
         
     }
 
     public function testBlockBasicsAND(){
         $file = __DIR__.'/test.html';
         
-        $t = new phpTemplateBlocks($file = $file, $blocks = array('block1' => True, 'block2' => True, 'block3' => True));
-        $this->assertStringContainsString("Block1,2and3", $t->getOutput('text'));
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block1' => True, 'block2' => True, 'block3' => True));
+        $this->assertStringContainsString("This is Block2and3_text", $t->getOutput('text'));
 
-        $t = new phpTemplateBlocks($file = $file, $blocks = array('block1' => True, 'block2' => True, 'block3' => False));
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block1' => True, 'block2' => True, 'block3' => False));
         $this->assertStringNotContainsString('Block1,2and3', $t->getOutput('text'));
 
-        $checks = array("Block2and3_text");
-        foreach($checks as $check){
-            $t = new phpTemplateBlocks($file = $file, $blocks = array('block2' => False, 'block3' => False));
-            $this->assertStringNotContainsString($check, $t->getOutput('text'));
-            
-            $t = new phpTemplateBlocks($file = $file, $blocks = array('block2' => True, 'block3' => False));
-            $this->assertStringNotContainsString($check, $t->getOutput('text'));
+        $check ="This is Block2and3_text\n";
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block2' => False, 'block3' => False));
+        $this->assertStringNotContainsString($check, $t->getOutput('text'));
+        
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block2' => True, 'block3' => False));
+        $this->assertStringNotContainsString($check, $t->getOutput('text'));
 
-            $t = new phpTemplateBlocks($file = $file, $blocks = array('block2' => False, 'block3' => True));
-            $this->assertStringNotContainsString($check, $t->getOutput('text'));
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block2' => False, 'block3' => True));
+        $this->assertStringNotContainsString($check, $t->getOutput('text'));
 
-            $t = new phpTemplateBlocks($file = $file, $blocks = array('block2' => True, 'block3' => True));
-            $this->assertStringContainsString($check, $t->getOutput('text'));
-        }
+        $t = new phpTemplateBlocks($file = $file, $vars = null, $blocks = array('block2' => True, 'block3' => True));
+        $this->assertStringContainsString($check, $t->getOutput('text'));
+        
     }
 }

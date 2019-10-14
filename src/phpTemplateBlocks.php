@@ -135,30 +135,35 @@
             foreach($this->templateElements as $block){
                 if($this->startsWith('block:', $block)){
                     $block = trim(str_replace('block:','', $block));
-                    $aked_keysWithType = preg_split('/[ ]?,/', $block);
-                    
-                    if(in_array('and', $aked_keysWithType) === True){
-                        $operator = 'and';
-                        array_diff($aked_keysWithType, array('and','AND'));
+                    $aked_keysWithType = array_map('trim', preg_split('/[ ]?,/', $block));
+                    $showBlock = False;
+                    $operator = "or";
+                    if(in_array("and", $aked_keysWithType) === True){
+                        $operator = "and";
                         $showBlock = True;
-                    }else{
-                        $operator = 'or';
-                        array_diff($aked_keysWithType, array('or', 'OR'));
-                        $showBlock = False;
                     }
+                    $aked_keysWithType = array_diff($aked_keysWithType, array($operator));
 
                     foreach($aked_keysWithType as $key){
-                        $keykNoType = preg_replace(array('/(_html|_text)$/'), '', $key);
-                        if(isset($this->blocks[$keykNoType]) and $this->blocks[$keykNoType] === True){
-                            if($operator === 'and'){
-                                $showBlock = $showBlock AND True;
-                            }else{
-                                $showBlock = True;
+                        $keykNoType = preg_replace(array('/(_html|_text)$/'), '', trim($key));
+                        
+                        if($operator === "or"){
+                            if(isset($this->blocks[$keykNoType])){
+                                if ($this->blocks[$keykNoType] === True){
+                                    $showBlock = True;
+                                }
                             }
-                        }else if(isset($this->blocks[$keykNoType]) and $this->blocks[$keykNoType] === False){
-                            $showBlock = False;
-                        }else{
-                            $showBlock = False;
+                        }
+                        if($operator === "and"){
+                            if(isset($this->blocks[$keykNoType])){
+                                if ($this->blocks[$keykNoType] === True){
+                                    $showBlock = $showBlock AND True;
+                                }else{
+                                    $showBlock = False;
+                                }
+                            }else{
+                                $showBlock = False;
+                            }
                         }
                     }
 
