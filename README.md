@@ -8,7 +8,10 @@ Simple Template Class, e.g. for eMail Template
 - Output Text as HTML or Text, with one templatefile.
 
 ## Usage
-### Example
+### Install
+`composer require ganti/php-template-blocks`
+
+### Example`
 ```html
 <p> Hallo {{name}}</p>
 
