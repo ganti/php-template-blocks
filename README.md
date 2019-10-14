@@ -116,9 +116,16 @@ Output:
     <p>This is Block2or3</p>
 ```
 
+### Condition OR (default)
+```html
+{{block:or,block2,block3}}
+  <p>This is Block2or3, shown only in text if block2 or block3 are true</p>
+{{endblock:or,block2,block3}}
+```
+
 ### Condition AND
 ```html
 {{block:and,block2_text,block3}}
-  <p>This is Block2or3_text, shown only in text if block2 and block3 are true</p>
-{{endblock:or,block2_text,block3}}
+  <p>This is Block2and3_text, shown only in text if block2 and block3 are true</p>
+{{endblock:and,block2_text,block3}}
 ```
