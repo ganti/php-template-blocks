@@ -3,7 +3,7 @@ Simple Template Class, e.g. for eMail Template
 
 ## Features
 
-- Substitution of variables
+- Substitution/replacement of variables
 - Showing/Hiding content blocks with conditions OR, AND
 - Output Text as HTML or Text, with one templatefile.
 
@@ -16,23 +16,23 @@ Simple Template Class, e.g. for eMail Template
 <p> Hallo {{name}}</p>
 
 {{block:block1}}
-<p>This is block1, shown in HTML and text</p>
+  <p>This is block1, shown in HTML and text</p>
 {{endblock:block1}}
 
 {{block:block1_html}}
-<p>This is block1, shown only in HTML</p>
+  <p>This is block1, shown only in HTML</p>
 {{endblock:block1_html}}
 
 {{block:block1_text}}
-<p>This is block1_text, shown only in text</p>
+  <p>This is block1_text, shown only in text</p>
 {{endblock:block1_text}}
 
 {{block:and,block1,block2,block3}}
-<p>This is Block1,2and3, shown only if block1, block2 and block3 are true</p>
+  <p>This is Block1,2and3, shown only if block1, block2 and block3 are true</p>
 {{endblock:and,block1,block2,block3}}
 
 {{block:and,block2_text,block3}}
-<p>This is Block2or3_text, shown only in text if block2 and block3 are true</p>
+  <p>This is Block2or3_text, shown only in text if block2 and block3 are true</p>
 {{endblock:or,block2_text,block3}}
 ```
 
