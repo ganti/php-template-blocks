@@ -17,6 +17,8 @@
             $this->blocks = array();
             $this->output = null;
             $this->outputType = null;
+            $this->cleanupSrcTemplate = True;
+            
             
             if($file != null){
                 $this->loadTemplateFile($file);
@@ -35,7 +37,6 @@
                 $content = file_get_contents($file);
                 if($content != False){
                     $this->template = $content;
-                    $this->output = $content;
                     $return = True;
                 }else{
                     $return = False;
@@ -47,13 +48,24 @@
         }
 
         public function compileOutput(){
+
+            if($this->cleanupSrcTemplate == True){
+                $tLines = explode("\n", $this->template);
+                $tLines = array_map('trim', $tLines);
+                $this->template = implode("\n", $tLines);
+
+                $this->template = preg_replace("/(\r\r)/", PHP_EOL, $this->template);
+                $this->template = preg_replace("/(\n\n)/", PHP_EOL, $this->template);
+                $this->template = preg_replace("/(\r\n\r\n)/", PHP_EOL, $this->template);
+
+                $this->output = $this->template;
+            }
+
             $this->findAllSubstitutionKeys();
             $this->substiututeTemplateVars();
             $this->BlocksSanityCheck();
             $this->setBlocksForOutput();
-            $this->output = preg_replace("/(\r\r)/", PHP_EOL, $this->output);
-            $this->output = preg_replace("/(\n\n)/", PHP_EOL, $this->output);
-            $this->output = preg_replace("/(\r\n\r\n)/", PHP_EOL, $this->output);
+            
             return $this->output;
         }
 
